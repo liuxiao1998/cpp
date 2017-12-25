@@ -1,34 +1,35 @@
 /*************************************************************************
 	> File Name: mymind.cpp
 	> Author: liuxiao
-	> Mail: liuxiao1998@sjtu.edu.cn 
+	> Mail: liuxiao1998@sjtu.edu.cn
 	> Created Time: Thu 11 May 2017 08:11:43 PM CST
  ************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
-#include "reg.h"
+#include "./include/reg.h"
 using namespace std;
 int main()
 {
-	char pa[]="'text':'";
-	char pb[]="'";
-	char *cont;
+	char pa[]="class=\"xlistju\">";
+	char pb[]="</a></div>";
+
 	char cmd[256];
 	int i,num,npatnum;
 	for(i=1;i<=29;i++)
 	{
 	printf("%d\n",i);
 	memset(cmd,0,256);
-	sprintf(cmd,"wget -q -O \"./tmp\" www.juzimi.com/tags/暖心?page=%d --user-agent=\"Mozilla/5.0\"",i);
+	sprintf(cmd,"wget -q -O \"./tmp\" www.juzimi.com/tags/回忆?page=%d --user-agent=\"Mozilla/5.0\"",i);
 	system(cmd);
 	FILE *fp;
 	if(fp=fopen("./tmp","r"))
 	{
 		fseek(fp,0,SEEK_END);
 		num=ftell(fp);
-		cont=(char *)malloc(num+1);
+		char *cont=new char[num+1];
+		memset(cont,0,strlen(cont));
 		fseek(fp,SEEK_SET,0);
 		fread(cont,num,1,fp);
 		npatnum=patnum(pa,pb,cont);
@@ -39,9 +40,12 @@ int main()
 		FILE *ll=fopen("./heart","a+");
 		for(i=0;i<=npatnum-1;i++)
 		{
-			for(k=la[i];k<=lb[i];k++)
+			for(k=la[i]+strlen(pa);k<=lb[i]-1;k++)
 			{
+				if(cont[k]!='\n')
+				{
 				fputc(cont[k],ll);
+			}
 			}
 			fputc('\n',ll);
 		}
@@ -49,10 +53,10 @@ int main()
 		ll=NULL;
 	delete []la;
 	delete []lb;
+	delete []cont;
 	}
 	fclose(fp);
 	fp=NULL;
-	free(cont);
-	cont=NULL;
+
 	}
 }
