@@ -22,10 +22,7 @@ int patnum(char *pattern, char *patternb, char *all)
     char bufb[pb_length];
     memset(buf,0,strlen(pattern));
     memset(bufb,0,strlen(patternb));
-
     int sig = 0, i = 0, k = 0;
-
-
     for(i=0;i<=content_length-pa_length;++i)
     {
        if(mcmp(all,i,pattern)==0)
@@ -43,7 +40,6 @@ int patnum(char *pattern, char *patternb, char *all)
     if (sig == 0)
     {
         printf("Failed to find anything.\n");
-        exit(0);
     }
     return sig;
 }

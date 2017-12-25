@@ -10,8 +10,15 @@
 #include <iostream>
 #include "./include/reg.h"
 using namespace std;
-int main()
+int main(int argc,char **argv)
 {
+        if(argc!=2)
+        {
+        printf("help:\n");
+        printf("This programme needs 1 argument!\n");
+        printf("example:./main 回忆\n");
+        exit(0);
+        }
 	char pa[]="class=\"xlistju\">";
 	char pb[]="</a></div>";
 
@@ -21,7 +28,7 @@ int main()
 	{
 	printf("%d\n",i);
 	memset(cmd,0,256);
-	sprintf(cmd,"wget -q -O \"./tmp\" www.juzimi.com/tags/回忆?page=%d --user-agent=\"Mozilla/5.0\"",i);
+	sprintf(cmd,"wget -q -O \"./tmp\" www.juzimi.com/tags/%s?page=%d --user-agent=\"Mozilla/5.0\"",argv[1],i);
 	system(cmd);
 	FILE *fp;
 	if(fp=fopen("./tmp","r"))
