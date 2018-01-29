@@ -7,5 +7,12 @@
 #include "../src/patnum.c"
 #include "../src/findpatplace.c"
 typedef struct result Res;
+/*
+struct result{
+int num;
+int *list;
+}
+
+*/
 int patnum(char *patterna,char *patternb,char *content);
 Res * findpatplace(char *patterna,char *patternb,char *content);
