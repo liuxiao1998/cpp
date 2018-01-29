@@ -39,28 +39,25 @@ int main(int argc,char **argv)
 		memset(cont,0,strlen(cont));
 		fseek(fp,SEEK_SET,0);
 		fread(cont,num,1,fp);
-		npatnum=patnum(pa,pb,cont);
-		int *la=new int[npatnum+1];
-		int *lb=new int[npatnum+1];
-		findpatplace(pa,pb,cont,la,lb);
+		Res *res=findpatplace(pa,pb,cont);
 		int i,k;
 		FILE *ll=fopen("./heart","a+");
-		for(i=0;i<=npatnum-1;i++)
-		{
-			for(k=la[i]+strlen(pa);k<=lb[i]-1;k++)
-			{
-				if(cont[k]!='\n')
-				{
-				fputc(cont[k],ll);
-			}
-			}
-			fputc('\n',ll);
-		}
+    if(res->num==0)
+    {
+      break;
+    }
+    for(i=0;i<res->num;++i)
+    {for(k=res->list[2*i];k<=res->list[2*i+1];++k)
+      {
+        putchar(cont[k]);
+      }
+      printf("\n");
+    }
+    delete []res->list;
+    delete []res;
 		fclose(ll);
 		ll=NULL;
-	delete []la;
-	delete []lb;
-	delete []cont;
+	  delete []cont;
 	}
 	fclose(fp);
 	fp=NULL;

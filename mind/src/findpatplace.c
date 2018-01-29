@@ -1,9 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+struct result{
+int num;
+int *list;
+};
 int mcmp(char *all, int i, char *pat);
-void findpatplace(char *pattern, char *patternb, char *all, int *list, int *listb)
+int patnum(char *pattern, char *patternb, char *all);
+struct result * findpatplace(char *pattern, char *patternb, char *all)
 {
+  struct result *res=new struct result();
   long content_length=strlen(all);
   int pa_length=strlen(pattern);
   int pb_length=strlen(patternb);
@@ -11,6 +17,8 @@ void findpatplace(char *pattern, char *patternb, char *all, int *list, int *list
   char bufb[pb_length];
   memset(buf,0,strlen(pattern));
   memset(bufb,0,strlen(patternb));
+
+  int *list=new int[2*patnum(pattern,patternb,all)];
 
   int sig = 0, i = 0, k = 0;
   for(i=0;i<=content_length-pa_length;++i)
@@ -21,12 +29,15 @@ void findpatplace(char *pattern, char *patternb, char *all, int *list, int *list
        {
          if(mcmp(all,k,patternb)==0)
          {
-           list[sig]=i;
-           listb[sig]=k;
+           list[sig*2]=i+pa_length;
+           list[sig*2+1]=k-1;
            ++sig;
            break;
          }
        }
      }
   }
+  res->num=sig;
+  res->list=list;
+  return res;
 }
